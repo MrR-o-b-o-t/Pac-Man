@@ -46,7 +46,9 @@ function createBoard() {
       squares[i].classList.add("pac-dot");
     } else if (layout[i] === 1) {
       squares[i].classList.add("wall");
-    } else if (layout[i] === 3) {
+    } else if (layout[i] === 2) {
+      squares[i].classList.add('ghost-lair')
+  }   else if (layout[i] === 3) {
       squares[i].classList.add("power-pellet");
     }
   }
@@ -61,32 +63,45 @@ function pacmanMotion() {
   switch (direction) {
     case "w":
       if (
+        !squares[pacmanCurrentIndex -width].classList.contains('ghost-lair') &&
         !squares[pacmanCurrentIndex - width].classList.contains("wall") &&
         pacmanCurrentIndex - width >= 0
       )
         pacmanCurrentIndex -= width;
+        console.log(pacmanCurrentIndex)
       break;
     case "s":
       if (
-        direction === "s" &&
+        !squares[pacmanCurrentIndex + width].classList.contains('ghost-lair') &&
         !squares[pacmanCurrentIndex + width].classList.contains("wall") &&
         pacmanCurrentIndex + width < width * width
       )
         pacmanCurrentIndex += width;
+        console.log(pacmanCurrentIndex)
       break;
     case "d":
       if (
+        !squares[pacmanCurrentIndex +1].classList.contains('ghost-lair') &&
         !squares[pacmanCurrentIndex + 1].classList.contains("wall") &&
         pacmanCurrentIndex % width < width - 1
       )
         pacmanCurrentIndex += 1;
+        if(pacmanCurrentIndex === 391){
+          pacmanCurrentIndex = 364;
+        }
+        console.log(pacmanCurrentIndex)
       break;
     case "a":
       if (
+        !squares[pacmanCurrentIndex -1].classList.contains('ghost-lair') &&
         !squares[pacmanCurrentIndex - 1].classList.contains("wall") &&
         pacmanCurrentIndex % width !== 0
       )
         pacmanCurrentIndex -= 1;
+        if(pacmanCurrentIndex === 364) {
+          pacmanCurrentIndex = 391;
+        }
+        console.log(pacmanCurrentIndex)
       break;
   }
   squares[pacmanCurrentIndex].classList.add("pacman");
@@ -120,3 +135,18 @@ function keepScore() {
 document.addEventListener("keypress", movePacman);
 let movement = setInterval(pacmanMotion, 300);
 let scoreTracker = setInterval(keepScore, 300);
+
+class Ghost {
+  constructor(className, startIndex, speed) {
+    this.className = className
+    this.startIndex = startIndex
+    this.speed = speed
+  }
+}
+
+ghosts = [
+  new Ghost('blinky', 348, 250),
+  new Ghost('pinky', 376, 400),
+  new Ghost('inky', 351, 300),
+  new Ghost('clyde', 379, 500),
+]
