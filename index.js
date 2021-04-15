@@ -1,39 +1,39 @@
 const width = 28;
-const grid = document.querySelector('.grid');
-const scoreDisplay = document.querySelector('#score');
+const grid = document.querySelector(".grid");
+const scoreDisplay = document.querySelector("#score");
 let currentScore = 0;
 let direction = null;
-let squares = []
+let squares = [];
 
 const layout = [
-    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-    1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,
-    1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,
-    1,3,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,3,1,
-    1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-    1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,
-    1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,
-    1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,
-    1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,
-    1,1,1,1,1,1,0,1,1,4,4,4,4,4,4,4,4,4,4,1,1,0,1,1,1,1,1,1,
-    1,1,1,1,1,1,0,1,1,4,1,1,1,2,2,1,1,1,4,1,1,0,1,1,1,1,1,1,
-    1,1,1,1,1,1,0,1,1,4,1,2,2,2,2,2,2,1,4,1,1,0,1,1,1,1,1,1,
-    4,4,4,4,4,4,0,0,0,4,1,2,2,2,2,2,2,1,4,0,0,0,4,4,4,4,4,4,
-    1,1,1,1,1,1,0,1,1,4,1,2,2,2,2,2,2,1,4,1,1,0,1,1,1,1,1,1,
-    1,1,1,1,1,1,0,1,1,4,1,1,1,1,1,1,1,1,4,1,1,0,1,1,1,1,1,1,
-    1,1,1,1,1,1,0,1,1,4,1,1,1,1,1,1,1,1,4,1,1,0,1,1,1,1,1,1,
-    1,0,0,0,0,0,0,0,0,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,1,
-    1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,
-    1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,
-    1,3,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,3,1,
-    1,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,1,
-    1,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,1,
-    1,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,0,0,1,
-    1,0,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,1,
-    1,0,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,1,
-    1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-    1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+  1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+  1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,
+  1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,
+  1,3,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,3,1,
+  1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,
+  1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+  1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,
+  1,0,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,0,1,
+  1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,
+  1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,
+  1,1,1,1,1,1,0,1,1,4,4,4,4,4,4,4,4,4,4,1,1,0,1,1,1,1,1,1,
+  1,1,1,1,1,1,0,1,1,4,1,1,1,2,2,1,1,1,4,1,1,0,1,1,1,1,1,1,
+  1,1,1,1,1,1,0,1,1,4,1,2,2,2,2,2,2,1,4,1,1,0,1,1,1,1,1,1,
+  4,4,4,4,4,4,0,0,0,4,1,2,2,2,2,2,2,1,4,0,0,0,4,4,4,4,4,4,
+  1,1,1,1,1,1,0,1,1,4,1,2,2,2,2,2,2,1,4,1,1,0,1,1,1,1,1,1,
+  1,1,1,1,1,1,0,1,1,4,1,1,1,1,1,1,1,1,4,1,1,0,1,1,1,1,1,1,
+  1,1,1,1,1,1,0,1,1,4,1,1,1,1,1,1,1,1,4,1,1,0,1,1,1,1,1,1,
+  1,0,0,0,0,0,0,0,0,4,4,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,1,
+  1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,
+  1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,
+  1,3,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,3,1,
+  1,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,1,
+  1,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,1,
+  1,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,0,0,1,
+  1,0,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,1,
+  1,0,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,1,
+  1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+  1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 ]
 
 function createBoard() {
@@ -47,8 +47,8 @@ function createBoard() {
     } else if (layout[i] === 1) {
       squares[i].classList.add("wall");
     } else if (layout[i] === 2) {
-      squares[i].classList.add('ghost-lair')
-  }   else if (layout[i] === 3) {
+      squares[i].classList.add("ghost-lair");
+    } else if (layout[i] === 3) {
       squares[i].classList.add("power-pellet");
     }
   }
@@ -63,45 +63,41 @@ function pacmanMotion() {
   switch (direction) {
     case "w":
       if (
-        !squares[pacmanCurrentIndex -width].classList.contains('ghost-lair') &&
+        !squares[pacmanCurrentIndex - width].classList.contains("ghost-lair") &&
         !squares[pacmanCurrentIndex - width].classList.contains("wall") &&
         pacmanCurrentIndex - width >= 0
       )
         pacmanCurrentIndex -= width;
-        console.log(pacmanCurrentIndex)
       break;
     case "s":
       if (
-        !squares[pacmanCurrentIndex + width].classList.contains('ghost-lair') &&
+        !squares[pacmanCurrentIndex + width].classList.contains("ghost-lair") &&
         !squares[pacmanCurrentIndex + width].classList.contains("wall") &&
         pacmanCurrentIndex + width < width * width
       )
         pacmanCurrentIndex += width;
-        console.log(pacmanCurrentIndex)
       break;
     case "d":
       if (
-        !squares[pacmanCurrentIndex +1].classList.contains('ghost-lair') &&
+        !squares[pacmanCurrentIndex + 1].classList.contains("ghost-lair") &&
         !squares[pacmanCurrentIndex + 1].classList.contains("wall") &&
         pacmanCurrentIndex % width < width - 1
       )
         pacmanCurrentIndex += 1;
-        if(pacmanCurrentIndex === 391){
-          pacmanCurrentIndex = 364;
-        }
-        console.log(pacmanCurrentIndex)
+      if (pacmanCurrentIndex === 391) {
+        pacmanCurrentIndex = 364;
+      }
       break;
     case "a":
       if (
-        !squares[pacmanCurrentIndex -1].classList.contains('ghost-lair') &&
+        !squares[pacmanCurrentIndex - 1].classList.contains("ghost-lair") &&
         !squares[pacmanCurrentIndex - 1].classList.contains("wall") &&
         pacmanCurrentIndex % width !== 0
       )
         pacmanCurrentIndex -= 1;
-        if(pacmanCurrentIndex === 364) {
-          pacmanCurrentIndex = 391;
-        }
-        console.log(pacmanCurrentIndex)
+      if (pacmanCurrentIndex === 364) {
+        pacmanCurrentIndex = 391;
+      }
       break;
   }
   squares[pacmanCurrentIndex].classList.add("pacman");
@@ -138,15 +134,45 @@ let scoreTracker = setInterval(keepScore, 300);
 
 class Ghost {
   constructor(className, startIndex, speed) {
-    this.className = className
-    this.startIndex = startIndex
-    this.speed = speed
+    this.className = className;
+    this.startIndex = startIndex;
+    this.speed = speed;
+    this.currentIndex = startIndex;
+    this.isScared = false;
+    this.timerId = NaN;
   }
 }
 
 ghosts = [
-  new Ghost('blinky', 348, 250),
-  new Ghost('pinky', 376, 400),
-  new Ghost('inky', 351, 300),
-  new Ghost('clyde', 379, 500),
-]
+  new Ghost("blinky", 348, 250),
+  new Ghost("pinky", 376, 400),
+  new Ghost("inky", 351, 300),
+  new Ghost("clyde", 379, 500),
+];
+
+ghosts.forEach((ghost) => {
+  squares[ghost.currentIndex].classList.add(ghost.className)
+  squares[ghost.currentIndex].classList.add('ghost')
+});
+
+ghosts.forEach((ghost) => moveGhost(ghost));
+
+function moveGhost(ghost) {
+  const directions = [-1, +1, -width, +width];
+  let direction = directions[Math.floor(Math.random() * directions.length)];
+  ghost.timerId = setInterval(function () {
+    if(
+    !squares[ghost.currentIndex+direction].classList.contains('wall') 
+    && 
+    !squares[ghost.currentIndex+direction].classList.contains('ghost')
+    ){
+    squares[ghost.currentIndex].classList.remove(ghost.className);
+    squares[ghost.currentIndex].classList.remove('ghost')
+    ghost.currentIndex += direction;
+    squares[ghost.currentIndex].classList.add(ghost.className);
+    squares[ghost.currentIndex].classList.add('ghost')
+    } else {
+    direction = directions[Math.floor(Math.random() * directions.length)];
+    }
+  }, ghost.speed);
+}
