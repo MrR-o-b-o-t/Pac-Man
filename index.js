@@ -18,8 +18,8 @@ const layout = [
   1,1,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,1,1,
   1,1,1,1,1,1,0,1,1,4,4,4,4,4,4,4,4,4,4,1,1,0,1,1,1,1,1,1,
   1,1,1,1,1,1,0,1,1,4,1,1,1,2,2,1,1,1,4,1,1,0,1,1,1,1,1,1,
-  1,1,1,1,1,1,0,1,1,4,1,2,2,2,2,2,2,1,4,1,1,0,1,1,1,1,1,1,
-  4,4,4,4,4,4,0,0,0,4,1,2,2,2,2,2,2,1,4,0,0,0,4,4,4,4,4,4,
+  1,1,1,1,1,1,0,1,1,4,1,2,2,6,6,2,2,1,4,1,1,0,1,1,1,1,1,1,
+  4,4,4,4,4,4,0,0,0,4,1,2,2,6,6,2,2,1,4,0,0,0,4,4,4,4,4,4,
   1,1,1,1,1,1,0,1,1,4,1,2,2,2,2,2,2,1,4,1,1,0,1,1,1,1,1,1,
   1,1,1,1,1,1,0,1,1,4,1,1,1,1,1,1,1,1,4,1,1,0,1,1,1,1,1,1,
   1,1,1,1,1,1,0,1,1,4,1,1,1,1,1,1,1,1,4,1,1,0,1,1,1,1,1,1,
@@ -50,6 +50,8 @@ function createBoard() {
       squares[i].classList.add("ghost-lair");
     } else if (layout[i] === 3) {
       squares[i].classList.add("power-pellet");
+    } else if (layout[i] === 6) {
+      squares[i].classList.add("ghost-lair-door")
     }
   }
 }
@@ -165,13 +167,28 @@ function moveGhost(ghost) {
     !squares[ghost.currentIndex+direction].classList.contains('wall') 
     && 
     !squares[ghost.currentIndex+direction].classList.contains('ghost')
+    && !squares[ghost.currentIndex+direction].classList.contains('ghost-lair-door')
     ){
     squares[ghost.currentIndex].classList.remove(ghost.className);
     squares[ghost.currentIndex].classList.remove('ghost')
     ghost.currentIndex += direction;
     squares[ghost.currentIndex].classList.add(ghost.className);
     squares[ghost.currentIndex].classList.add('ghost')
-    } else {
+    } 
+    // else if(
+    //   !squares[ghost.currentIndex+direction].classList.contains('wall') 
+    //   && 
+    //   !squares[ghost.currentIndex+direction].classList.contains('ghost')
+    //   &&
+    //   squares[ghost.currentIndex+direction].classList.contains('ghost-lair-door')
+    //   ){
+    //   squares[ghost.currentIndex].classList.remove(ghost.className);
+    //   squares[ghost.currentIndex].classList.remove('ghost')
+    //   ghost.currentIndex += -width;
+    //   squares[ghost.currentIndex].classList.add(ghost.className);
+    //   squares[ghost.currentIndex].classList.add('ghost')
+    // } 
+    else {
     direction = directions[Math.floor(Math.random() * directions.length)];
     }
   }, ghost.speed);
