@@ -60,3 +60,7 @@ html, body {
 .ghost-lair-door {
     background-color: white;
 }
+.scared-ghost {
+    background-color: aquamarine;
+    border: none;
+}
